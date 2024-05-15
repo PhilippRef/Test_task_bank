@@ -18,10 +18,6 @@ public class RulesDB {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "product_type")
-    private ProductsDB productsDB;
-
     @Column(name = "min_salary", nullable = false)
     private Integer minSalary;
 
@@ -39,4 +35,13 @@ public class RulesDB {
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
+
+    @OneToOne
+    @JoinColumn(name = "product_type")
+    private ProductsDB productsDB;
+
+//    @OneToOne(mappedBy = "rulesDB", cascade = CascadeType.ALL)
+//    private BorrowerDB borrowerDB;
+
+
 }

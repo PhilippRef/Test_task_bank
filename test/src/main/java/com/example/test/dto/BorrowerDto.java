@@ -18,7 +18,7 @@ public class BorrowerDto {
     private int salary;
     private int claim;
     private LocalDateTime creationDate;
-    private LocalDateTime lastUpdateDate;
-    private boolean is_active;
-    private boolean is_debtor;
+    private LocalDateTime lastUpdate;
+    private boolean isActive;
+    private boolean isDebtor;
 }

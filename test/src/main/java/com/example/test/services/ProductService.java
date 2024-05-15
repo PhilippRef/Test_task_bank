@@ -45,9 +45,11 @@ public class ProductService implements CRUDService<ProductsDto> {
         productsDto.setPercent(productsDB.getPercent());
         productsDto.setAmountOfCredit(productsDB.getAmountOfCredit());
         productsDto.setCreationDate(productsDB.getCreationDate());
-        productsDto.setLastUpdateDate(productsDB.getLastUpdateDate());
-        productsDto.set_active(productsDB.isActive());
+        productsDto.setLastUpdate(productsDB.getLastUpdate());
+        productsDto.setActive(productsDB.isActive());
+        productsDto.setRulesDto(productsDB.getName());
 
         return productsDto;
     }
+
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -36,4 +37,7 @@ public class ProductsDB {
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
+
+    @OneToOne(mappedBy = "productsDB", cascade = CascadeType.ALL)
+    private RulesDB rulesDB;
 }

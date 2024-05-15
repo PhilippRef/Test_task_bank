@@ -18,6 +18,7 @@ public class ProductsDto {
     private int percent;
     private int duration;
     private LocalDateTime creationDate;
-    private LocalDateTime lastUpdateDate;
-    private boolean is_active;
+    private LocalDateTime lastUpdate;
+    private boolean isActive;
+    private String rulesDto;
 }

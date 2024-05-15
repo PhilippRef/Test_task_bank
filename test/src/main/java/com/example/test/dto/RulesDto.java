@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 public class RulesDto {
     private int id;
     private String name;
-    private String productDB;
     private int minSalary;
     private int maxSalary;
     private LocalDateTime creationDate;
     private LocalDateTime lastUpdate;
     private boolean isActive;
+    private String productDB;
 }
