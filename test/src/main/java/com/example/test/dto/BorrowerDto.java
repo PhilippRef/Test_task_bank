@@ -11,13 +11,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ProductsDto {
+public class BorrowerDto {
     private int id;
     private String name;
-    private int amountOfCredit;
-    private int percent;
-    private int duration;
+    private String lastName;
+    private int salary;
+    private int claim;
     private LocalDateTime creationDate;
     private LocalDateTime lastUpdateDate;
     private boolean is_active;
+    private boolean is_debtor;
 }

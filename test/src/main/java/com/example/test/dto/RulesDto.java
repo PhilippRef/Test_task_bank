@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ProductsDto {
+public class RulesDto {
     private int id;
     private String name;
-    private int amountOfCredit;
-    private int percent;
-    private int duration;
+    private String productDB;
+    private int minSalary;
+    private int maxSalary;
     private LocalDateTime creationDate;
-    private LocalDateTime lastUpdateDate;
-    private boolean is_active;
+    private LocalDateTime lastUpdate;
+    private boolean isActive;
 }

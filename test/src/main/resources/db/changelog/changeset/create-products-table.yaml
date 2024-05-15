@@ -39,7 +39,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: last_update_date
+                  name: last_update
                   type: timestamp(8)
                   constraints:
                     nullable: false

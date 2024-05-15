@@ -7,26 +7,29 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "borrower")
+@Table(name = "rules")
 @NoArgsConstructor
 @Data
-public class BorrowerDB {
+public class RulesDB {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
+    @ManyToOne
+    @JoinColumn(name = "product_type")
+    private ProductsDB productsDB;
 
-    @Column(name = "salary", nullable = false)
-    private Integer salary;
+    @Column(name = "min_salary", nullable = false)
+    private Integer minSalary;
 
-    @Column(name = "claim", nullable = false) //сумма заема
-    private Integer claim;
+    @Column(name = "max_salary", nullable = false)
+    private Integer maxSalary;
+
+//    @Column(name = "is_debtor", nullable = false)
+//    private boolean isDebtor;
 
     @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
@@ -36,7 +39,4 @@ public class BorrowerDB {
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
-
-    @Column(name = "is_debtor", nullable = false)
-    private boolean isDebtor;
 }

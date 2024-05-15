@@ -1,21 +1,28 @@
 package com.example.test.controller;
 
+import com.example.test.dto.ProductsDto;
+import com.example.test.services.CRUDService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class ApiController {
+    private final CRUDService<ProductsDto> crudService;
 
     @GetMapping("/products")
-    public ResponseEntity<Collection<ProductsDTO>> getAllProducts() {
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+    public ResponseEntity<Collection<ProductsDto>> getAllProducts() {
+        return ResponseEntity.status(HttpStatus.OK).body(crudService.getAll());
     }
 
     @GetMapping("/products/{id}/rules")
-    public RestController<Collection<RulesDTO>> getRulesForBorrower() {
+    public RestController<Collection<RulesDto>> getRulesForBorrower() {
         return null;
     }
 
