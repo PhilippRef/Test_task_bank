@@ -1,16 +1,22 @@
 package com.example.test.services;
 
+import com.example.test.dto.BorrowerDto;
 import com.example.test.dto.ProductsDto;
+import com.example.test.dto.RulesDto;
+import com.example.test.entity.BorrowerDB;
 import com.example.test.entity.ProductsDB;
+import com.example.test.entity.RulesDB;
 import com.example.test.repositories.BorrowerRepository;
 import com.example.test.repositories.ProductsRepository;
 import com.example.test.repositories.RulesRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -29,11 +35,43 @@ public class ProductService implements CRUDService<ProductsDto> {
 
     public ProductsDto getRuleByProductId(int productId) {
         log.info("Get rule by product id: {}", productId);
-        Optional<ProductsDB> productsDBOptional = productsRepository.findById(productId);
-        if (productsDBOptional.isEmpty()) {
-            return null;
+
+        ProductsDB productsDB = productsRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException
+                        ("Продукт с id " + productId + " не найден."));
+//        Optional<ProductsDB> productsDBOptional = productsRepository.findById(productId);
+//        if (productsDBOptional.isEmpty()) {
+//            return null;
+//        }
+//        return mapToDto(productsRepository.findById(productId).orElseThrow());
+        return mapToDto(productsDB);
+    }
+
+    @Override
+    public List<ProductsDto> findProductForBorrower(BorrowerDto borrowerDto) {
+        log.info("Find products for borrower: {}", borrowerDto);
+
+        int borrowerSalary = borrowerDto.getSalary();
+        int borrowerClaim = borrowerDto.getClaim();
+        boolean borrowerIsDebtor = borrowerDto.isDebtor();
+
+        List<ProductsDto> productsList = new ArrayList<>();
+        Collection<ProductsDto> allProducts = getAll();
+        List<RulesDto> allRules = rulesRepository.findAll().stream()
+                .map(RulesService::mapToDto)
+                .toList();
+
+        for (var product : allProducts) {
+            for (var rule : allRules) {
+                if ((borrowerSalary > rule.getMaxSalary() && !borrowerIsDebtor) ||
+                        !borrowerIsDebtor ||
+                        borrowerSalary > rule.getMinSalary()) {
+                    productsList.add(product);
+                }
+            }
         }
-        return mapToDto(productsRepository.findById(productId).orElseThrow());
+
+        return productsList;
     }
 
     private static ProductsDto mapToDto(ProductsDB productsDB) {
@@ -47,7 +85,10 @@ public class ProductService implements CRUDService<ProductsDto> {
         productsDto.setCreationDate(productsDB.getCreationDate());
         productsDto.setLastUpdate(productsDB.getLastUpdate());
         productsDto.setActive(productsDB.isActive());
-        productsDto.setRulesDto(productsDB.getName());
+        productsDto.setRules(productsDB.getRulesDB()
+                .stream()
+                .map(RulesService::mapToDto)
+                .toList());
 
         return productsDto;
     }

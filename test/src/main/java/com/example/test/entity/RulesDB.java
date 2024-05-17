@@ -36,7 +36,7 @@ public class RulesDB {
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_type")
     private ProductsDB productsDB;
 

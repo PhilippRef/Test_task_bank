@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,5 +21,5 @@ public class ProductsDto {
     private LocalDateTime creationDate;
     private LocalDateTime lastUpdate;
     private boolean isActive;
-    private String rulesDto;
+    private List<RulesDto> rules;
 }

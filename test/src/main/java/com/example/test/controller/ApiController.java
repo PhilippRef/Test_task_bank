@@ -1,7 +1,9 @@
 package com.example.test.controller;
 
+import com.example.test.dto.BorrowerDto;
 import com.example.test.dto.ProductsDto;
 import com.example.test.dto.RulesDto;
+import com.example.test.entity.ProductsDB;
 import com.example.test.services.CRUDService;
 import com.example.test.services.ProductService;
 import com.example.test.services.RulesService;
@@ -29,7 +31,7 @@ public class ApiController {
     public ResponseEntity<?> getRulesByProductId(@PathVariable int id) {
         if (productService.getRuleByProductId(id) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("message: " + "продукт с id " + id + " не существует");
+                    .body("message: " + "продукт с id " + id + " не найден.");
         }
         return ResponseEntity.status(HttpStatus.OK).body(productService.getRuleByProductId(id));
     }
@@ -40,19 +42,23 @@ public class ApiController {
                                                @RequestBody RulesDto rulesDto) {
         if (productService.getRuleByProductId(id) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("message: " + "продукт с id " + id + " не существует");
+                    .body("message: " + "продукт с id " + id + " не найден.");
         }
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(rulesService.addRuleForProduct(id, rulesDto));
     }
 
     @DeleteMapping("products/{id}/rules/{id}")
-    public ResponseEntity<?> deleteRulesFromProduct() {
-        return null;
+    public ResponseEntity<String> deleteRulesFromProduct(@PathVariable int productId,
+                                                         @PathVariable int ruleId) {
+        rulesService.deleteRuleFromProduct(productId, ruleId);
+        return ResponseEntity.status(HttpStatus.OK).body
+                ("message: " + "правило с id " + ruleId +
+                        " отмечено на удаление у продукта с id " + productId);
     }
 
     @PostMapping(value = "/products/apply", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> getProductsForBorrower() {
+    public ResponseEntity<BorrowerDto> getProductsForBorrower(@RequestBody BorrowerDto borrowerDto) {
         return null;
     }
 }

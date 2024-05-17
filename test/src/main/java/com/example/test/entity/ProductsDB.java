@@ -38,6 +38,6 @@ public class ProductsDB {
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
-    @OneToOne(mappedBy = "productsDB", cascade = CascadeType.ALL)
-    private RulesDB rulesDB;
+    @OneToMany(mappedBy = "productsDB", cascade = CascadeType.ALL)
+    private List<RulesDB> rulesDB;
 }

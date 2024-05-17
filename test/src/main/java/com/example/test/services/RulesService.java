@@ -1,13 +1,17 @@
 package com.example.test.services;
 
+import com.example.test.dto.ProductsDto;
 import com.example.test.dto.RulesDto;
 import com.example.test.entity.ProductsDB;
 import com.example.test.entity.RulesDB;
 import com.example.test.repositories.ProductsRepository;
 import com.example.test.repositories.RulesRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -21,14 +25,50 @@ public class RulesService {
         log.info("Create rule for product");
 
         RulesDB rulesDB = mapToEntity(rulesDto);
-        String rulesDtoProductType = rulesDto.getProductDB();
+//        String rulesDtoProductType = rulesDto.getProductDB();
 //        ProductsDB productsDB = productsRepository
 //                .findByName(rulesDtoProductType);
-        ProductsDB productsDB = productsRepository.findById(productId).get();
+        ProductsDB productsDB = findProductById(productId);
         rulesDB.setProductsDB(productsDB);
         RulesDB createdRule = rulesRepository.save(rulesDB);
 
         return mapToDto(createdRule);
+    }
+
+    public void deleteRuleFromProduct(int productId, int ruleId) {
+        log.info("Delete rule from product");
+
+        ProductsDB productsDB = findProductById(productId);
+
+        RulesDB rulesDB = productsDB.getRulesDB().stream()
+                .filter(r -> r.getId().equals(ruleId))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException
+                        ("Правило с id " + ruleId + " не найдено."));
+
+        rulesDB.setActive(false);
+        rulesRepository.save(rulesDB);
+    }
+
+    public RulesDto getRuleById(int id) {
+        log.info("Get rule by ID: {}", id);
+
+        Optional<RulesDB> rulesDBOptional = rulesRepository.findById(id);
+        if (rulesDBOptional.isEmpty()) {
+            return null;
+        }
+        return mapToDto(rulesRepository.findById(id).orElseThrow());
+    }
+
+    public String deleteRuleById(int id) {
+        log.info("Delete rule by ID: {}", id);
+
+        Optional<RulesDB> rulesDBOptional = rulesRepository.findById(id);
+        if (rulesDBOptional.isEmpty()) {
+            return "message: " + "правило с id " + id + " не найдено.";
+        }
+        rulesRepository.deleteById(id);
+        return null;
     }
 
     private static RulesDB mapToEntity(RulesDto rulesDto) {
@@ -45,7 +85,7 @@ public class RulesService {
         return rulesDB;
     }
 
-    private static RulesDto mapToDto(RulesDB rulesDB) {
+    static RulesDto mapToDto(RulesDB rulesDB) {
         RulesDto rulesDto = new RulesDto();
 
         rulesDto.setId(rulesDB.getId());
@@ -58,5 +98,19 @@ public class RulesService {
         rulesDto.setProductDB(rulesDB.getProductsDB().getName());
 
         return rulesDto;
+    }
+
+    private ProductsDB findProductById(int productId) {
+        return productsRepository
+                .findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException
+                        ("Продукт с id " + productId + " не найден."));
+    }
+
+    private RulesDto findRuleById(int ruleId) {
+        return mapToDto(rulesRepository
+                .findById(ruleId)
+                .orElseThrow(() -> new EntityNotFoundException
+                        ("Правило с id " + ruleId + " не найдено.")));
     }
 }
