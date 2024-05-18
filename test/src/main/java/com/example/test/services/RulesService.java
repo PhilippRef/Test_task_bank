@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -30,6 +31,9 @@ public class RulesService {
 //                .findByName(rulesDtoProductType);
         ProductsDB productsDB = findProductById(productId);
         rulesDB.setProductsDB(productsDB);
+        rulesDB.setCreationDate(LocalDateTime.now());
+        rulesDB.setLastUpdate(LocalDateTime.now());
+        rulesDB.setActive(true);
         RulesDB createdRule = rulesRepository.save(rulesDB);
 
         return mapToDto(createdRule);
@@ -47,6 +51,7 @@ public class RulesService {
                         ("Правило с id " + ruleId + " не найдено."));
 
         rulesDB.setActive(false);
+        rulesDB.setLastUpdate(LocalDateTime.now());
         rulesRepository.save(rulesDB);
     }
 
@@ -78,9 +83,8 @@ public class RulesService {
         rulesDB.setName(rulesDto.getName());
         rulesDB.setMinSalary(rulesDto.getMinSalary());
         rulesDB.setMaxSalary(rulesDto.getMaxSalary());
-        rulesDB.setCreationDate(rulesDto.getCreationDate());
-        rulesDB.setLastUpdate(rulesDto.getLastUpdate());
         rulesDB.setActive(rulesDto.isActive());
+        rulesDB.setCreationDate(LocalDateTime.now());
 
         return rulesDB;
     }
@@ -92,10 +96,9 @@ public class RulesService {
         rulesDto.setName(rulesDB.getName());
         rulesDto.setMinSalary(rulesDB.getMinSalary());
         rulesDto.setMaxSalary(rulesDB.getMaxSalary());
-        rulesDto.setCreationDate(rulesDB.getCreationDate());
-        rulesDto.setLastUpdate(rulesDB.getLastUpdate());
         rulesDto.setActive(rulesDB.isActive());
         rulesDto.setProductDB(rulesDB.getProductsDB().getName());
+        rulesDto.setCreationDate(LocalDateTime.now());
 
         return rulesDto;
     }

@@ -30,7 +30,7 @@ public class RulesDB {
     @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
 
-    @Column(name = "last_update_date", nullable = false)
+    @Column(name = "last_update", nullable = false)
     private LocalDateTime lastUpdate;
 
     @Column(name = "is_active", nullable = false)

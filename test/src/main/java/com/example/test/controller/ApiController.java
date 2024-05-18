@@ -3,8 +3,6 @@ package com.example.test.controller;
 import com.example.test.dto.BorrowerDto;
 import com.example.test.dto.ProductsDto;
 import com.example.test.dto.RulesDto;
-import com.example.test.entity.ProductsDB;
-import com.example.test.services.CRUDService;
 import com.example.test.services.ProductService;
 import com.example.test.services.RulesService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -48,7 +47,7 @@ public class ApiController {
                 .body(rulesService.addRuleForProduct(id, rulesDto));
     }
 
-    @DeleteMapping("products/{id}/rules/{id}")
+    @DeleteMapping("products/{productId}/rules/{ruleId}")
     public ResponseEntity<String> deleteRulesFromProduct(@PathVariable int productId,
                                                          @PathVariable int ruleId) {
         rulesService.deleteRuleFromProduct(productId, ruleId);
@@ -58,7 +57,8 @@ public class ApiController {
     }
 
     @PostMapping(value = "/products/apply", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<BorrowerDto> getProductsForBorrower(@RequestBody BorrowerDto borrowerDto) {
-        return null;
+    public ResponseEntity<List<ProductsDto>> getProductsForBorrower(@RequestBody BorrowerDto borrowerDto) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(productService.findProductForBorrower(borrowerDto));
     }
 }

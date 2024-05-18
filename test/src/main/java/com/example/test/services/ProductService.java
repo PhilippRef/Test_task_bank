@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -82,9 +83,8 @@ public class ProductService implements CRUDService<ProductsDto> {
         productsDto.setDuration(productsDB.getDuration());
         productsDto.setPercent(productsDB.getPercent());
         productsDto.setAmountOfCredit(productsDB.getAmountOfCredit());
-        productsDto.setCreationDate(productsDB.getCreationDate());
-        productsDto.setLastUpdate(productsDB.getLastUpdate());
         productsDto.setActive(productsDB.isActive());
+        productsDto.setCreationDate(LocalDateTime.now());
         productsDto.setRules(productsDB.getRulesDB()
                 .stream()
                 .map(RulesService::mapToDto)

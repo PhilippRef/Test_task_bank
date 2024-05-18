@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="insert-into-products" author="Filipp">
+        <insert tableName="products">
+            <column name="name" value="first_product"/>
+            <column name="amount_of_credit" value="200000"/>
+            <column name="percent" value="6"/>
+            <column name="duration" value="3"/>
+            <column name="is_active" value="true"/>
+            <column name="creation_date" value="18.05.2024"/>
+            <column name="last_update" value="18.05.2024"/>
+        </insert>
+        <insert tableName="products">
+            <column name="name" value="second_product"/>
+            <column name="percent" value="15"/>
+            <column name="is_active" value="true"/>
+            <column name="creation_date" value="18.05.2024"/>
+            <column name="last_update" value="18.05.2024"/>
+        </insert>
+        <insert tableName="products">
+            <column name="name" value="third_product"/>
+            <column name="amount_of_credit" value="1000000"/>
+            <column name="percent" value="12"/>
+            <column name="duration" value="5"/>
+            <column name="is_active" value="true"/>
+            <column name="creation_date" value="18.05.2024"/>
+            <column name="last_update" value="18.05.2024"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

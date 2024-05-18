@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="insert-into-rules" author="Filipp">
+        <insert tableName="rules">
+            <column name="name" value="first_rule"/>
+            <column name="max_salary" value="50000"/>
+            <column name="is_active" value="true"/>
+            <column name="creation_date" value="18.05.2024"/>
+            <column name="last_update" value="18.05.2024"/>
+        </insert>
+        <insert tableName="rules">
+            <column name="name" value="second_rule"/>
+            <column name="is_active" value="true"/>
+            <column name="creation_date" value="18.05.2024"/>
+            <column name="last_update" value="18.05.2024"/>
+        </insert>
+        <insert tableName="rules">
+            <column name="name" value="third_rule"/>
+            <column name="min_salary" value="25000"/>
+            <column name="is_active" value="true"/>
+            <column name="creation_date" value="18.05.2024"/>
+            <column name="last_update" value="18.05.2024"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
