@@ -48,12 +48,21 @@ public class ApiController {
     }
 
     @DeleteMapping("products/{productId}/rules/{ruleId}")
-    public ResponseEntity<String> deleteRulesFromProduct(@PathVariable int productId,
-                                                         @PathVariable int ruleId) {
-        rulesService.deleteRuleFromProduct(productId, ruleId);
-        return ResponseEntity.status(HttpStatus.OK).body
-                ("message: " + "правило с id " + ruleId +
-                        " отмечено на удаление у продукта с id " + productId);
+    public ResponseEntity<?> deleteRulesFromProduct(@PathVariable int productId,
+                                                    @PathVariable int ruleId) {
+        if (productService.getRuleByProductId(productId) == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("message: " + "продукт с id " + productId + " не найден.");
+        }
+        if (rulesService.getRuleById(ruleId) == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("message: " + "правило с id " + ruleId + " не найдено.");
+        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(rulesService.deleteRuleFromProduct(productId, ruleId));
+//        return ResponseEntity.status(HttpStatus.OK).body
+//                ("message: " + "правило с id " + ruleId +
+//                        " отмечено на удаление у продукта с id " + productId);
     }
 
     @PostMapping(value = "/products/apply", consumes = {MediaType.APPLICATION_JSON_VALUE})

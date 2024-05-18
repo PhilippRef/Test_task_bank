@@ -3,13 +3,10 @@ package com.example.test.services;
 import com.example.test.dto.BorrowerDto;
 import com.example.test.dto.ProductsDto;
 import com.example.test.dto.RulesDto;
-import com.example.test.entity.BorrowerDB;
 import com.example.test.entity.ProductsDB;
-import com.example.test.entity.RulesDB;
 import com.example.test.repositories.BorrowerRepository;
 import com.example.test.repositories.ProductsRepository;
 import com.example.test.repositories.RulesRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -29,6 +27,7 @@ public class ProductService implements CRUDService<ProductsDto> {
 
     public Collection<ProductsDto> getAll() {
         log.info("Get all products");
+
         return productsRepository.findAll()
                 .stream()
                 .map(ProductService::mapToDto)
@@ -38,15 +37,11 @@ public class ProductService implements CRUDService<ProductsDto> {
     public ProductsDto getRuleByProductId(int productId) {
         log.info("Get rule by product id: {}", productId);
 
-        ProductsDB productsDB = productsRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException
-                        ("Продукт с id " + productId + " не найден."));
-//        Optional<ProductsDB> productsDBOptional = productsRepository.findById(productId);
-//        if (productsDBOptional.isEmpty()) {
-//            return null;
-//        }
-//        return mapToDto(productsRepository.findById(productId).orElseThrow());
-        return mapToDto(productsDB);
+        Optional<ProductsDB> productsDBOptional = productsRepository.findById(productId);
+        if (productsDBOptional.isEmpty()) {
+            return null;
+        }
+        return mapToDto(productsRepository.findById(productId).orElseThrow());
     }
 
     @Override
@@ -76,7 +71,7 @@ public class ProductService implements CRUDService<ProductsDto> {
         return productsList;
     }
 
-    public static ProductsDto mapToDto(ProductsDB productsDB) {
+    static ProductsDto mapToDto(ProductsDB productsDB) {
         ProductsDto productsDto = new ProductsDto();
 
         productsDto.setId(productsDB.getId());
@@ -85,7 +80,8 @@ public class ProductService implements CRUDService<ProductsDto> {
         productsDto.setPercent(productsDB.getPercent());
         productsDto.setAmountOfCredit(productsDB.getAmountOfCredit());
         productsDto.setActive(productsDB.isActive());
-        productsDto.setCreationDate(LocalDateTime.now());
+        productsDto.setCreationDate(productsDB.getCreationDate());
+        productsDto.setLastUpdate(LocalDateTime.now());
         productsDto.setRules(productsDB.getRulesDB()
                 .stream()
                 .map(RulesService::mapToDto)
@@ -94,4 +90,22 @@ public class ProductService implements CRUDService<ProductsDto> {
         return productsDto;
     }
 
+    public ProductsDB mapToEntity(ProductsDto productsDto) {
+        ProductsDB productsDB = new ProductsDB();
+
+        productsDB.setId(productsDto.getId());
+        productsDB.setName(productsDto.getName());
+        productsDB.setDuration(productsDto.getDuration());
+        productsDB.setPercent(productsDto.getPercent());
+        productsDB.setAmountOfCredit(productsDto.getAmountOfCredit());
+        productsDB.setCreationDate(LocalDateTime.now());
+        productsDB.setLastUpdate(LocalDateTime.now());
+        productsDB.setActive(productsDto.isActive());
+        productsDB.setRulesDB(productsDto.getRules()
+                .stream()
+                .map(RulesService::mapToEntity)
+                .toList());
+
+        return productsDB;
+    }
 }

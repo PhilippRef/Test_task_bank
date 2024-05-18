@@ -11,7 +11,13 @@ spring:
                     batch_size: 1000
                 order_inserts: true
                 order_updates: true
+        show-sql: true
+        hibernate.ddl-auto: update
+        defer-datasource-initialization: true
     liquibase:
         change-log: classpath:db/changelog/db.changelog-master.xml
-        enabled: true
+        enabled: false
         drop-first: false
+    sql:
+        init:
+            mode: always

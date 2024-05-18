@@ -9,5 +9,6 @@
     <include file="changeset/create-rules-table.xml" relativeToChangelogFile="true"/>
     <include file="changeset/insert-changeset-products-table.xml" relativeToChangelogFile="true"/>
     <include file="changeset/insert-changeset-rules-table.xml" relativeToChangelogFile="true"/>
+    <include file="changeset/update-changeset-products-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

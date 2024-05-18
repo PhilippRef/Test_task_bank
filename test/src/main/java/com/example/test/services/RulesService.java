@@ -6,7 +6,6 @@ import com.example.test.entity.ProductsDB;
 import com.example.test.entity.RulesDB;
 import com.example.test.repositories.ProductsRepository;
 import com.example.test.repositories.RulesRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,11 +24,11 @@ public class RulesService {
     public RulesDto addRuleForProduct(int productId, RulesDto rulesDto) {
         log.info("Create rule for product");
 
+        ProductsDB productsDB = productService.mapToEntity(getProductById(productId));
         RulesDB rulesDB = mapToEntity(rulesDto);
 //        String rulesDtoProductType = rulesDto.getProductDB();
 //        ProductsDB productsDB = productsRepository
 //                .findByName(rulesDtoProductType);
-        ProductsDB productsDB = findProductById(productId);
         rulesDB.setProductsDB(productsDB);
         rulesDB.setCreationDate(LocalDateTime.now());
         rulesDB.setLastUpdate(LocalDateTime.now());
@@ -39,30 +38,24 @@ public class RulesService {
         return mapToDto(createdRule);
     }
 
-    public void deleteRuleFromProduct(int productId, int ruleId) {
+    public String deleteRuleFromProduct(int productId, int ruleId) {
         log.info("Delete rule from product");
 
-        ProductsDB productsDB = findProductById(productId);
+        ProductsDB productsDB = productService.mapToEntity(getProductById(productId));
 
-        RulesDB rulesDB = productsDB.getRulesDB().stream()
-                .filter(r -> r.getId().equals(ruleId))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException
-                        ("Правило с id " + ruleId + " не найдено."));
+//        RulesDB rulesDB = productsDB.getRulesDB().stream()
+//                .filter(r -> r.getId().equals(ruleId))
+//                .findFirst()
+//                .orElseThrow(() -> new EntityNotFoundException
+//                        ("Правило с id " + ruleId + " не найдено."));
+
+        RulesDB rulesDB = mapToEntity(getRuleById(ruleId));
 
         rulesDB.setActive(false);
         rulesDB.setLastUpdate(LocalDateTime.now());
         rulesRepository.save(rulesDB);
-    }
 
-    public RulesDto getRuleById(int id) {
-        log.info("Get rule by ID: {}", id);
-
-        Optional<RulesDB> rulesDBOptional = rulesRepository.findById(id);
-        if (rulesDBOptional.isEmpty()) {
-            return null;
-        }
-        return mapToDto(rulesRepository.findById(id).orElseThrow());
+        return null;
     }
 
     public String deleteRuleById(int id) {
@@ -76,7 +69,7 @@ public class RulesService {
         return null;
     }
 
-    public static RulesDB mapToEntity(RulesDto rulesDto) {
+    static RulesDB mapToEntity(RulesDto rulesDto) {
         RulesDB rulesDB = new RulesDB();
 
         rulesDB.setId(rulesDto.getId());
@@ -89,11 +82,12 @@ public class RulesService {
         return rulesDB;
     }
 
-    public static RulesDto mapToDto(RulesDB rulesDB) {
+    static RulesDto mapToDto(RulesDB rulesDB) {
         RulesDto rulesDto = new RulesDto();
 
         rulesDto.setId(rulesDB.getId());
         rulesDto.setName(rulesDB.getName());
+        rulesDto.setMinSalary(rulesDB.getMinSalary());
         rulesDto.setMinSalary(rulesDB.getMinSalary());
         rulesDto.setMaxSalary(rulesDB.getMaxSalary());
         rulesDto.setActive(rulesDB.isActive());
@@ -103,17 +97,25 @@ public class RulesService {
         return rulesDto;
     }
 
-    private ProductsDB findProductById(int productId) {
-        return productsRepository
-                .findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException
-                        ("Продукт с id " + productId + " не найден."));
+    private ProductsDto getProductById(int productId) {
+        log.info("Get product by ID: {}", productId);
+
+        Optional<ProductsDB> productsDBOptional = productsRepository.findById(productId);
+        if (productsDBOptional.isEmpty()) {
+            return null;
+        }
+
+        return productService.mapToDto(productsRepository.findById(productId).orElseThrow());
     }
 
-    private RulesDto findRuleById(int ruleId) {
-        return mapToDto(rulesRepository
-                .findById(ruleId)
-                .orElseThrow(() -> new EntityNotFoundException
-                        ("Правило с id " + ruleId + " не найдено.")));
+    public RulesDto getRuleById(int ruleId) {
+        log.info("Get rule by ID: {}", ruleId);
+
+        Optional<RulesDB> rulesDBOptional = rulesRepository.findById(ruleId);
+        if (rulesDBOptional.isEmpty()) {
+            return null;
+        }
+
+        return mapToDto(rulesRepository.findById(ruleId).orElseThrow());
     }
 }

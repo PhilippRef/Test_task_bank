@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Data
 public class RulesDB {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
