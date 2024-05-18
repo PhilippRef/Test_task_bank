@@ -15,7 +15,7 @@ public class RulesDB {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "rule_name", nullable = false)
     private String name;
 
     @Column(name = "min_salary", nullable = false)

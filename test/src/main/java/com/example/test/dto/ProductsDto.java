@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ProductsDto {
-    private int id;
+    private Integer id;
     private String name;
     private int amountOfCredit;
     private int percent;

@@ -7,24 +7,31 @@
 
     <changeSet id="insert-into-rules" author="Filipp">
         <insert tableName="rules">
-            <column name="name" value="first_rule"/>
+            <column name="rule_name" value="first_rule"/>
+            <column name="min_salary" value="0"/>
             <column name="max_salary" value="50000"/>
-            <column name="is_active" value="true"/>
-            <column name="creation_date" value="18.05.2024"/>
-            <column name="last_update" value="18.05.2024"/>
+            <column name="is_active" value="1"/>
+            <column name="creation_date" value="2024-05-18 00:00:00"/>
+            <column name="last_update" value="2024-05-18 00:00:00"/>
+            <column name="product_type" value="first_product"/>
         </insert>
         <insert tableName="rules">
-            <column name="name" value="second_rule"/>
-            <column name="is_active" value="true"/>
-            <column name="creation_date" value="18.05.2024"/>
-            <column name="last_update" value="18.05.2024"/>
+            <column name="rule_name" value="second_rule"/>
+            <column name="min_salary" value="0"/>
+            <column name="max_salary" value="0"/>
+            <column name="is_active" value="1"/>
+            <column name="creation_date" value="2024-05-18 00:00:00"/>
+            <column name="last_update" value="2024-05-18 00:00:00"/>
+            <column name="product_type" value="second_product"/>
         </insert>
         <insert tableName="rules">
-            <column name="name" value="third_rule"/>
+            <column name="rule_name" value="third_rule"/>
             <column name="min_salary" value="25000"/>
-            <column name="is_active" value="true"/>
-            <column name="creation_date" value="18.05.2024"/>
-            <column name="last_update" value="18.05.2024"/>
+            <column name="max_salary" value="0"/>
+            <column name="is_active" value="1"/>
+            <column name="creation_date" value="2024-05-18 00:00:00"/>
+            <column name="last_update" value="2024-05-18 00:00:00"/>
+            <column name="product_type" value="third_product"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

@@ -10,25 +10,25 @@
             <column autoIncrement="true" name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(64)">
+            <column name="product_name" type="varchar(64)">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="amount_of_credit" type="bigint">
-                <constraints nullable="true" unique="false"/>
-            </column>
-            <column name="percent" type="bigint">
-                <constraints nullable="true" unique="false"/>
-            </column>
-            <column name="duration" type="bigint">
-                <constraints nullable="true" unique="false"/>
-            </column>
-            <column name="creation_date" type="timestamp">
-                <constraints nullable="true" unique="false"/>
-            </column>
-            <column name="last_update" type="timestamp">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="is_active" type="boolean">
+            <column name="percent" type="bigint">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="duration" type="bigint">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="creation_date" type="timestamp(6)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="last_update" type="timestamp(6)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="is_active" type="tinyint(1)">
                 <constraints nullable="false" unique="false"/>
             </column>
         </createTable>

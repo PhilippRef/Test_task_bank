@@ -10,22 +10,25 @@
             <column autoIncrement="true" name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(64)">
+            <column name="rule_name" type="varchar(64)">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="min_salary" type="bigint">
-                <constraints nullable="true" unique="false"/>
+                <constraints nullable="false" unique="false"/>
             </column>
             <column name="max_salary" type="bigint">
-                <constraints nullable="true" unique="false"/>
-            </column>
-            <column name="creation_date" type="timestamp">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="last_update" type="timestamp">
+            <column name="creation_date" type="timestamp(6)">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="is_active" type="boolean">
+            <column name="last_update" type="timestamp(6)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="is_active" type="tinyint(1)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="product_type" type="varchar(255)">
                 <constraints nullable="false" unique="false"/>
             </column>
         </createTable>

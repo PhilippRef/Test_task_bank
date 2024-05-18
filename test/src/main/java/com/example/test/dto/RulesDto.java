@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class RulesDto {
-    private int id;
+    private Integer id;
     private String name;
     private int minSalary;
     private int maxSalary;

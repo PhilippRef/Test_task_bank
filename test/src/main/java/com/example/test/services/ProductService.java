@@ -29,7 +29,8 @@ public class ProductService implements CRUDService<ProductsDto> {
 
     public Collection<ProductsDto> getAll() {
         log.info("Get all products");
-        return productsRepository.findAll().stream()
+        return productsRepository.findAll()
+                .stream()
                 .map(ProductService::mapToDto)
                 .toList();
     }
@@ -75,7 +76,7 @@ public class ProductService implements CRUDService<ProductsDto> {
         return productsList;
     }
 
-    private static ProductsDto mapToDto(ProductsDB productsDB) {
+    public static ProductsDto mapToDto(ProductsDB productsDB) {
         ProductsDto productsDto = new ProductsDto();
 
         productsDto.setId(productsDB.getId());

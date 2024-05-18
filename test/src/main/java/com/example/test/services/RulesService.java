@@ -76,7 +76,7 @@ public class RulesService {
         return null;
     }
 
-    private static RulesDB mapToEntity(RulesDto rulesDto) {
+    public static RulesDB mapToEntity(RulesDto rulesDto) {
         RulesDB rulesDB = new RulesDB();
 
         rulesDB.setId(rulesDto.getId());
@@ -89,7 +89,7 @@ public class RulesService {
         return rulesDB;
     }
 
-    static RulesDto mapToDto(RulesDB rulesDB) {
+    public static RulesDto mapToDto(RulesDB rulesDB) {
         RulesDto rulesDto = new RulesDto();
 
         rulesDto.setId(rulesDB.getId());
