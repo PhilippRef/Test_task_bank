@@ -28,18 +28,18 @@ public class ApiController {
 
     @GetMapping("/products/{id}/rules")
     public ResponseEntity<?> getRulesByProductId(@PathVariable int id) {
-        if (productService.getAllRulesByProductId(id) == null) {
+        if (productService.getProductByIdAndTheirRules(id) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("message: " + "продукт с id " + id + " не найден.");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getAllRulesByProductId(id));
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProductByIdAndTheirRules(id));
     }
 
     @PostMapping(value = "/products/{id}/rules",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> addRuleForProduct(@PathVariable int id,
                                                @RequestBody RulesDto rulesDto) {
-        if (productService.getAllRulesByProductId(id) == null) {
+        if (productService.getProductByIdAndTheirRules(id) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("message: " + "продукт с id " + id + " не найден.");
         }
@@ -50,7 +50,7 @@ public class ApiController {
     @DeleteMapping("products/{productId}/rules/{ruleId}")
     public ResponseEntity<?> deleteRulesFromProduct(@PathVariable int productId,
                                                     @PathVariable int ruleId) {
-        if (productService.getAllRulesByProductId(productId) == null) {
+        if (productService.getProductByIdAndTheirRules(productId) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("message: " + "продукт с id " + productId + " не найден.");
         }
@@ -66,7 +66,8 @@ public class ApiController {
     }
 
     @PostMapping(value = "/products/apply", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<List<ProductsDto>> getProductsForBorrower(@RequestBody BorrowerDto borrowerDto) {
+    public ResponseEntity<List<ProductsDto>> getProductsForBorrower
+            (@RequestBody BorrowerDto borrowerDto) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(productService.findProductForBorrower(borrowerDto));
     }

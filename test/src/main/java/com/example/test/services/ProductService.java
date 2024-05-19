@@ -34,7 +34,7 @@ public class ProductService implements CRUDService<ProductsDto> {
                 .toList();
     }
 
-    public ProductsDto getAllRulesByProductId(int productId) {
+    public ProductsDto getProductByIdAndTheirRules(int productId) {
         log.info("Get rule by product id: {}", productId);
 
         Optional<ProductsDB> productsDBOptional = productsRepository.findById(productId);
@@ -70,14 +70,18 @@ public class ProductService implements CRUDService<ProductsDto> {
                 .toList();
 
         for (var product : allProducts) {
-            for (var rule : allRules) {
-                if ((borrowerSalary > rule.getMaxSalary() && !borrowerIsDebtor) ||
-                        !borrowerIsDebtor ||
-                        borrowerSalary > rule.getMinSalary()) {
-                    productsList.add(product);
-                }
-            }
+            getProductByIdAndTheirRules(product.getId());
         }
+
+//        for (var product : allProducts) {
+//            for (var rule : allRules) {
+//                if ((borrowerSalary > rule.getMaxSalary() && !borrowerIsDebtor) ||
+//                        !borrowerIsDebtor ||
+//                        borrowerSalary > rule.getMinSalary()) {
+//                    productsList.add(product);
+//                }
+//            }
+//        }
 
         return productsList;
     }
