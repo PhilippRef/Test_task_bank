@@ -1,6 +1,6 @@
 package com.example.test.services;
 
-import com.example.test.dto.BorrowerDto;
+import com.example.test.model.Borrower;
 
 import java.util.Collection;
 import java.util.List;
@@ -8,5 +8,5 @@ import java.util.List;
 public interface CRUDService<T> {
     Collection<T> getAll();
 
-    List<T> findProductForBorrower(BorrowerDto borrowerDto);
+    List<T> findProductForBorrower(Borrower borrower);
 }

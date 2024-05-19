@@ -1,10 +1,9 @@
 package com.example.test.services;
 
-import com.example.test.dto.BorrowerDto;
 import com.example.test.dto.ProductsDto;
 import com.example.test.dto.RulesDto;
 import com.example.test.entity.ProductsDB;
-import com.example.test.repositories.BorrowerRepository;
+import com.example.test.model.Borrower;
 import com.example.test.repositories.ProductsRepository;
 import com.example.test.repositories.RulesRepository;
 import lombok.RequiredArgsConstructor;
@@ -52,12 +51,12 @@ public class ProductService implements CRUDService<ProductsDto> {
     }
 
     @Override
-    public List<ProductsDto> findProductForBorrower(BorrowerDto borrowerDto) {
-        log.info("Find products for borrower: {}", borrowerDto);
+    public List<ProductsDto> findProductForBorrower(Borrower borrower) {
+        log.info("Find products for borrower: {}", borrower);
 
-        int borrowerSalary = borrowerDto.getSalary();
-        long borrowerClaim = borrowerDto.getClaim();
-        boolean borrowerIsDebtor = borrowerDto.isDebtor();
+        int borrowerSalary = borrower.getSalary();
+        long borrowerClaim = borrower.getClaim();
+        boolean borrowerIsDebtor = borrower.isDebtor();
 
         List<ProductsDto> productsList = new ArrayList<>();
         Set<Integer> productsIdList = new HashSet<>();

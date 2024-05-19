@@ -1,8 +1,8 @@
 package com.example.test.controller;
 
-import com.example.test.dto.BorrowerDto;
 import com.example.test.dto.ProductsDto;
 import com.example.test.dto.RulesDto;
+import com.example.test.model.Borrower;
 import com.example.test.services.ProductService;
 import com.example.test.services.RulesService;
 import lombok.RequiredArgsConstructor;
@@ -67,8 +67,8 @@ public class ApiController {
 
     @PostMapping(value = "/products/apply", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<ProductsDto>> getProductsForBorrower
-            (@RequestBody BorrowerDto borrowerDto) {
+            (@RequestBody Borrower borrower) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(productService.findProductForBorrower(borrowerDto));
+                .body(productService.findProductForBorrower(borrower));
     }
 }

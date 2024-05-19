@@ -1,4 +1,4 @@
-package com.example.test.dto;
+package com.example.test.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BorrowerDto {
+public class Borrower {
     private Integer id;
     private String name;
     private String lastName;
