@@ -28,18 +28,18 @@ public class ApiController {
 
     @GetMapping("/products/{id}/rules")
     public ResponseEntity<?> getRulesByProductId(@PathVariable int id) {
-        if (productService.getRuleByProductId(id) == null) {
+        if (productService.getAllRulesByProductId(id) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("message: " + "продукт с id " + id + " не найден.");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getRuleByProductId(id));
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getAllRulesByProductId(id));
     }
 
     @PostMapping(value = "/products/{id}/rules",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> addRuleForProduct(@PathVariable int id,
                                                @RequestBody RulesDto rulesDto) {
-        if (productService.getRuleByProductId(id) == null) {
+        if (productService.getAllRulesByProductId(id) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("message: " + "продукт с id " + id + " не найден.");
         }
@@ -50,19 +50,19 @@ public class ApiController {
     @DeleteMapping("products/{productId}/rules/{ruleId}")
     public ResponseEntity<?> deleteRulesFromProduct(@PathVariable int productId,
                                                     @PathVariable int ruleId) {
-        if (productService.getRuleByProductId(productId) == null) {
+        if (productService.getAllRulesByProductId(productId) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("message: " + "продукт с id " + productId + " не найден.");
         }
-        if (rulesService.getRuleById(ruleId) == null) {
+        if (rulesService.getRuleByProductId(productId, ruleId) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("message: " + "правило с id " + ruleId + " не найдено.");
+                    .body("message: " + "правило с id " + ruleId
+                            + " в продукте с id " + productId + " не найдено.");
         }
+        rulesService.deleteRuleFromProduct(productId, ruleId);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(rulesService.deleteRuleFromProduct(productId, ruleId));
-//        return ResponseEntity.status(HttpStatus.OK).body
-//                ("message: " + "правило с id " + ruleId +
-//                        " отмечено на удаление у продукта с id " + productId);
+                .body("message: " + "правило с id " + ruleId
+                        + " отмечено на удаление у продукта с id " + productId);
     }
 
     @PostMapping(value = "/products/apply", consumes = {MediaType.APPLICATION_JSON_VALUE})

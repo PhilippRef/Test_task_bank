@@ -5,7 +5,7 @@ VALUES
     ('third_product', 1000000, 12, 5, 1, '2024-05-18 00:00:00', '2024-05-18 00:00:00');
 INSERT INTO rules (rule_name, min_salary, max_salary, creation_date, last_update, is_active, product_type)
 VALUES
-    ('first_rule', 0, 50000, '2024-05-18 00:00:00', '2024-05-18 00:00:00', 1, 1),
-    ('second_rule', 0, 0, '2024-05-18 00:00:00', '2024-05-18 00:00:00', 1, 2),
-    ('third_rule', 25000, 0, '2024-05-18 00:00:00', '2024-05-18 00:00:00', 1, 3);
+    ('first_rule_for_first_product', 0, 50000, '2024-05-18 00:00:00', '2024-05-18 00:00:00', 1, 1),
+    ('first_rule_for_second_product', 0, 0, '2024-05-18 00:00:00', '2024-05-18 00:00:00', 1, 2),
+    ('first_rule_for_third_product', 25000, 0, '2024-05-18 00:00:00', '2024-05-18 00:00:00', 1, 3);
 

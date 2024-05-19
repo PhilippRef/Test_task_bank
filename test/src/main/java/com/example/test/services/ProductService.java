@@ -34,13 +34,24 @@ public class ProductService implements CRUDService<ProductsDto> {
                 .toList();
     }
 
-    public ProductsDto getRuleByProductId(int productId) {
+    public ProductsDto getAllRulesByProductId(int productId) {
         log.info("Get rule by product id: {}", productId);
 
         Optional<ProductsDB> productsDBOptional = productsRepository.findById(productId);
         if (productsDBOptional.isEmpty()) {
             return null;
         }
+        return mapToDto(productsRepository.findById(productId).orElseThrow());
+    }
+
+    private ProductsDto getProductById(int productId) {
+        log.info("Get product by ID: {}", productId);
+
+        Optional<ProductsDB> productsDBOptional = productsRepository.findById(productId);
+        if (productsDBOptional.isEmpty()) {
+            return null;
+        }
+
         return mapToDto(productsRepository.findById(productId).orElseThrow());
     }
 

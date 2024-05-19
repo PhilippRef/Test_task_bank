@@ -12,7 +12,7 @@ spring:
                 order_inserts: true
                 order_updates: true
         show-sql: true
-        hibernate.ddl-auto: update
+        hibernate.ddl-auto: create-drop
         defer-datasource-initialization: true
     liquibase:
         change-log: classpath:db/changelog/db.changelog-master.xml

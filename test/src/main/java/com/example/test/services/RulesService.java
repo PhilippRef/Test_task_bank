@@ -6,11 +6,13 @@ import com.example.test.entity.ProductsDB;
 import com.example.test.entity.RulesDB;
 import com.example.test.repositories.ProductsRepository;
 import com.example.test.repositories.RulesRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,13 +28,12 @@ public class RulesService {
 
         ProductsDB productsDB = productService.mapToEntity(getProductById(productId));
         RulesDB rulesDB = mapToEntity(rulesDto);
-//        String rulesDtoProductType = rulesDto.getProductDB();
-//        ProductsDB productsDB = productsRepository
-//                .findByName(rulesDtoProductType);
+
         rulesDB.setProductsDB(productsDB);
         rulesDB.setCreationDate(LocalDateTime.now());
         rulesDB.setLastUpdate(LocalDateTime.now());
         rulesDB.setActive(true);
+
         RulesDB createdRule = rulesRepository.save(rulesDB);
 
         return mapToDto(createdRule);
@@ -41,16 +42,17 @@ public class RulesService {
     public String deleteRuleFromProduct(int productId, int ruleId) {
         log.info("Delete rule from product");
 
-        ProductsDB productsDB = productService.mapToEntity(getProductById(productId));
+        RulesDto rulesDto = getRuleByProductId(productId, ruleId);
+        if (rulesDto == null) {
+            return "message: " + "правило с id " + ruleId
+                    + " не найдено в продукте с id " + productId + ".";
+        }
 
-//        RulesDB rulesDB = productsDB.getRulesDB().stream()
-//                .filter(r -> r.getId().equals(ruleId))
-//                .findFirst()
-//                .orElseThrow(() -> new EntityNotFoundException
-//                        ("Правило с id " + ruleId + " не найдено."));
+        RulesDB rulesDB = mapToEntity(rulesDto);
+        String rulesDtoProductType = rulesDto.getProductDB();
+        ProductsDB productsDB = productsRepository.findByName(rulesDtoProductType);
 
-        RulesDB rulesDB = mapToEntity(getRuleById(ruleId));
-
+        rulesDB.setProductsDB(productsDB);
         rulesDB.setActive(false);
         rulesDB.setLastUpdate(LocalDateTime.now());
         rulesRepository.save(rulesDB);
@@ -67,34 +69,6 @@ public class RulesService {
         }
         rulesRepository.deleteById(id);
         return null;
-    }
-
-    static RulesDB mapToEntity(RulesDto rulesDto) {
-        RulesDB rulesDB = new RulesDB();
-
-        rulesDB.setId(rulesDto.getId());
-        rulesDB.setName(rulesDto.getName());
-        rulesDB.setMinSalary(rulesDto.getMinSalary());
-        rulesDB.setMaxSalary(rulesDto.getMaxSalary());
-        rulesDB.setActive(rulesDto.isActive());
-        rulesDB.setCreationDate(LocalDateTime.now());
-
-        return rulesDB;
-    }
-
-    static RulesDto mapToDto(RulesDB rulesDB) {
-        RulesDto rulesDto = new RulesDto();
-
-        rulesDto.setId(rulesDB.getId());
-        rulesDto.setName(rulesDB.getName());
-        rulesDto.setMinSalary(rulesDB.getMinSalary());
-        rulesDto.setMinSalary(rulesDB.getMinSalary());
-        rulesDto.setMaxSalary(rulesDB.getMaxSalary());
-        rulesDto.setActive(rulesDB.isActive());
-        rulesDto.setProductDB(rulesDB.getProductsDB().getName());
-        rulesDto.setCreationDate(LocalDateTime.now());
-
-        return rulesDto;
     }
 
     private ProductsDto getProductById(int productId) {
@@ -117,5 +91,50 @@ public class RulesService {
         }
 
         return mapToDto(rulesRepository.findById(ruleId).orElseThrow());
+    }
+
+    public RulesDto getRuleByProductId(int productId, int ruleId) {
+        log.info("Get rule by product id: {}", productId);
+
+        ProductsDto productsDto = getProductById(productId);
+        List<RulesDto> rulesList = productsDto.getRules();
+        Optional<RulesDto> rulesDto = rulesList.stream()
+                .filter(r -> r.getId().equals(ruleId))
+                .findAny();
+
+        if (rulesDto.isEmpty()) {
+            return null;
+        }
+        return rulesDto.get();
+    }
+
+    static RulesDB mapToEntity(RulesDto rulesDto) {
+        RulesDB rulesDB = new RulesDB();
+
+        rulesDB.setId(rulesDto.getId());
+        rulesDB.setName(rulesDto.getName());
+        rulesDB.setMinSalary(rulesDto.getMinSalary());
+        rulesDB.setMaxSalary(rulesDto.getMaxSalary());
+        rulesDB.setActive(rulesDto.isActive());
+        rulesDB.setCreationDate(rulesDto.getCreationDate());
+        rulesDB.setLastUpdate(LocalDateTime.now());
+
+        return rulesDB;
+    }
+
+    static RulesDto mapToDto(RulesDB rulesDB) {
+        RulesDto rulesDto = new RulesDto();
+
+        rulesDto.setId(rulesDB.getId());
+        rulesDto.setName(rulesDB.getName());
+        rulesDto.setMinSalary(rulesDB.getMinSalary());
+        rulesDto.setMinSalary(rulesDB.getMinSalary());
+        rulesDto.setMaxSalary(rulesDB.getMaxSalary());
+        rulesDto.setActive(rulesDB.isActive());
+        rulesDto.setProductDB(rulesDB.getProductsDB().getName());
+        rulesDto.setCreationDate(rulesDB.getCreationDate());
+        rulesDto.setLastUpdate(LocalDateTime.now());
+
+        return rulesDto;
     }
 }
