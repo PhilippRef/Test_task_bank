@@ -19,14 +19,11 @@ public class RulesDB {
     @Column(name = "rule_name", nullable = false)
     private String name;
 
-    @Column(name = "min_salary", nullable = false)
-    private Integer minSalary;
+    @Column(name = "borrower_salary", nullable = false)
+    private Integer borrowerSalary;
 
-    @Column(name = "max_salary", nullable = false)
-    private Integer maxSalary;
-
-//    @Column(name = "is_debtor", nullable = false)
-//    private boolean isDebtor;
+    @Column(name = "is_borrower_debtor", nullable = false)
+    private boolean isBorrowerDebtor;
 
     @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
@@ -40,9 +37,5 @@ public class RulesDB {
     @ManyToOne
     @JoinColumn(name = "product_type")
     private ProductsDB productsDB;
-
-//    @OneToOne(mappedBy = "rulesDB", cascade = CascadeType.ALL)
-//    private BorrowerDB borrowerDB;
-
 
 }

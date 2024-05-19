@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 public class RulesDto {
     private Integer id;
     private String name;
-    private int minSalary;
-    private int maxSalary;
+    private int borrowerSalary;
     private LocalDateTime creationDate;
     private LocalDateTime lastUpdate;
     private boolean isActive;
+    private boolean isBorrowerDebtor;
     private String productDB;
 }

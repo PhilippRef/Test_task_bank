@@ -6,7 +6,6 @@ import com.example.test.entity.ProductsDB;
 import com.example.test.entity.RulesDB;
 import com.example.test.repositories.ProductsRepository;
 import com.example.test.repositories.RulesRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class RulesService {
     public RulesDto addRuleForProduct(int productId, RulesDto rulesDto) {
         log.info("Create rule for product");
 
-        ProductsDB productsDB = productService.mapToEntity(getProductById(productId));
+        ProductsDB productsDB = productService.mapToEntity(productService.getProductById(productId));
         RulesDB rulesDB = mapToEntity(rulesDto);
 
         rulesDB.setProductsDB(productsDB);
@@ -71,32 +70,10 @@ public class RulesService {
         return null;
     }
 
-    private ProductsDto getProductById(int productId) {
-        log.info("Get product by ID: {}", productId);
-
-        Optional<ProductsDB> productsDBOptional = productsRepository.findById(productId);
-        if (productsDBOptional.isEmpty()) {
-            return null;
-        }
-
-        return productService.mapToDto(productsRepository.findById(productId).orElseThrow());
-    }
-
-    public RulesDto getRuleById(int ruleId) {
-        log.info("Get rule by ID: {}", ruleId);
-
-        Optional<RulesDB> rulesDBOptional = rulesRepository.findById(ruleId);
-        if (rulesDBOptional.isEmpty()) {
-            return null;
-        }
-
-        return mapToDto(rulesRepository.findById(ruleId).orElseThrow());
-    }
-
     public RulesDto getRuleByProductId(int productId, int ruleId) {
         log.info("Get rule by product id: {}", productId);
 
-        ProductsDto productsDto = getProductById(productId);
+        ProductsDto productsDto = productService.getProductById(productId);
         List<RulesDto> rulesList = productsDto.getRules();
         Optional<RulesDto> rulesDto = rulesList.stream()
                 .filter(r -> r.getId().equals(ruleId))
@@ -113,11 +90,11 @@ public class RulesService {
 
         rulesDB.setId(rulesDto.getId());
         rulesDB.setName(rulesDto.getName());
-        rulesDB.setMinSalary(rulesDto.getMinSalary());
-        rulesDB.setMaxSalary(rulesDto.getMaxSalary());
+        rulesDB.setBorrowerSalary(rulesDto.getBorrowerSalary());
         rulesDB.setActive(rulesDto.isActive());
         rulesDB.setCreationDate(rulesDto.getCreationDate());
         rulesDB.setLastUpdate(LocalDateTime.now());
+        rulesDB.setBorrowerDebtor(rulesDto.isBorrowerDebtor());
 
         return rulesDB;
     }
@@ -127,13 +104,12 @@ public class RulesService {
 
         rulesDto.setId(rulesDB.getId());
         rulesDto.setName(rulesDB.getName());
-        rulesDto.setMinSalary(rulesDB.getMinSalary());
-        rulesDto.setMinSalary(rulesDB.getMinSalary());
-        rulesDto.setMaxSalary(rulesDB.getMaxSalary());
+        rulesDto.setBorrowerSalary(rulesDB.getBorrowerSalary());
         rulesDto.setActive(rulesDB.isActive());
         rulesDto.setProductDB(rulesDB.getProductsDB().getName());
         rulesDto.setCreationDate(rulesDB.getCreationDate());
         rulesDto.setLastUpdate(LocalDateTime.now());
+        rulesDto.setBorrowerDebtor(rulesDB.isBorrowerDebtor());
 
         return rulesDto;
     }

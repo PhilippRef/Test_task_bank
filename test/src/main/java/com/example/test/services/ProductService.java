@@ -12,17 +12,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ProductService implements CRUDService<ProductsDto> {
     private final ProductsRepository productsRepository;
-    private final BorrowerRepository borrowerRepository;
     private final RulesRepository rulesRepository;
 
     public Collection<ProductsDto> getAll() {
@@ -44,7 +40,7 @@ public class ProductService implements CRUDService<ProductsDto> {
         return mapToDto(productsRepository.findById(productId).orElseThrow());
     }
 
-    private ProductsDto getProductById(int productId) {
+    ProductsDto getProductById(int productId) {
         log.info("Get product by ID: {}", productId);
 
         Optional<ProductsDB> productsDBOptional = productsRepository.findById(productId);
@@ -60,31 +56,52 @@ public class ProductService implements CRUDService<ProductsDto> {
         log.info("Find products for borrower: {}", borrowerDto);
 
         int borrowerSalary = borrowerDto.getSalary();
-        int borrowerClaim = borrowerDto.getClaim();
+        long borrowerClaim = borrowerDto.getClaim();
         boolean borrowerIsDebtor = borrowerDto.isDebtor();
 
         List<ProductsDto> productsList = new ArrayList<>();
+        Set<Integer> productsIdList = new HashSet<>();
         Collection<ProductsDto> allProducts = getAll();
-        List<RulesDto> allRules = rulesRepository.findAll().stream()
-                .map(RulesService::mapToDto)
-                .toList();
 
         for (var product : allProducts) {
-            getProductByIdAndTheirRules(product.getId());
+            productsIdList.clear();
+            if (product.isActive()) {
+                List<RulesDto> rules = rulesRepository.findAll()
+                        .stream()
+                        .filter(r -> r.getProductsDB().getId().equals(product.getId()))
+                        .map(RulesService::mapToDto)
+                        .toList();
+
+                for (var rule : rules) {
+                    if (rule.isActive()) {
+                        if (borrowerIsDebtor == rule.isBorrowerDebtor() &&
+                                borrowerSalary >= rule.getBorrowerSalary() &&
+                                borrowerClaim <= product.getAmountOfCredit() &&
+                                !productsIdList.contains(product.getId())) {
+                            productsIdList.add(product.getId());
+                            productsList.add(product);
+                        }
+                        if (borrowerIsDebtor == rule.isBorrowerDebtor() &&
+                                product.getAmountOfCredit() == Integer.MAX_VALUE &&
+                                !productsIdList.contains(product.getId())) {
+                            productsIdList.add(product.getId());
+                            productsList.add(product);
+                        }
+                        if (!borrowerIsDebtor == rule.isBorrowerDebtor() &&
+                                borrowerSalary >= rule.getBorrowerSalary() &&
+                                borrowerClaim <= product.getAmountOfCredit() &&
+                                product.getAmountOfCredit() != Integer.MAX_VALUE &&
+                                !productsIdList.contains(product.getId())) {
+                            productsIdList.add(product.getId());
+                            productsList.add(product);
+                        }
+                    }
+                }
+            }
         }
-
-//        for (var product : allProducts) {
-//            for (var rule : allRules) {
-//                if ((borrowerSalary > rule.getMaxSalary() && !borrowerIsDebtor) ||
-//                        !borrowerIsDebtor ||
-//                        borrowerSalary > rule.getMinSalary()) {
-//                    productsList.add(product);
-//                }
-//            }
-//        }
-
         return productsList;
     }
+
 
     static ProductsDto mapToDto(ProductsDB productsDB) {
         ProductsDto productsDto = new ProductsDto();

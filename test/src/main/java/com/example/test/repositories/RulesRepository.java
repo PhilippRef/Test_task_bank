@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RulesRepository extends JpaRepository<RulesDB, Integer> {
-    @Query("SELECT r FROM RulesDB r WHERE r.productsDB = ?1")
-    RulesDB findByProductType(int productType);
 }
