@@ -9,29 +9,29 @@
         <insert tableName="rules">
             <column name="rule_name" value="first_rule"/>
             <column name="borrower_salary" value="50000"/>
-            <column name="is_active" value="1"/>
-            <column name="is_borrower_debtor" value="0"/>
+            <column name="is_active" value="true"/>
+            <column name="is_borrower_debtor" value="false"/>
             <column name="creation_date" value="2024-05-18 00:00:00"/>
             <column name="last_update" value="2024-05-18 00:00:00"/>
-            <column name="product_type" value="first_product"/>
+            <column name="product_type" value="1"/>
         </insert>
         <insert tableName="rules">
             <column name="rule_name" value="second_rule"/>
             <column name="borrower_salary" value="0"/>
-            <column name="is_active" value="1"/>
-            <column name="is_borrower_debtor" value="0"/>
+            <column name="is_active" value="true"/>
+            <column name="is_borrower_debtor" value="false"/>
             <column name="creation_date" value="2024-05-18 00:00:00"/>
             <column name="last_update" value="2024-05-18 00:00:00"/>
-            <column name="product_type" value="second_product"/>
+            <column name="product_type" value="2"/>
         </insert>
         <insert tableName="rules">
             <column name="rule_name" value="third_rule"/>
             <column name="borrower_salary" value="25000"/>
-            <column name="is_active" value="1"/>
-            <column name="is_borrower_debtor" value="0"/>
+            <column name="is_active" value="true"/>
+            <column name="is_borrower_debtor" value="false"/>
             <column name="creation_date" value="2024-05-18 00:00:00"/>
             <column name="last_update" value="2024-05-18 00:00:00"/>
-            <column name="product_type" value="third_product"/>
+            <column name="product_type" value="3"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

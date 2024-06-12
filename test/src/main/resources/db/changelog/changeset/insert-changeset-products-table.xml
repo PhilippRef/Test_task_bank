@@ -11,16 +11,16 @@
             <column name="amount_of_credit" value="200000"/>
             <column name="percent" value="6"/>
             <column name="duration" value="3"/>
-            <column name="is_active" value="1"/>
+            <column name="is_active" value="true"/>
             <column name="creation_date" value="2024-05-18 00:00:00"/>
             <column name="last_update" value="2024-05-18 00:00:00"/>
         </insert>
         <insert tableName="products">
             <column name="product_name" value="second_product"/>
-            <column name="amount_of_credit" value="0"/>
+            <column name="amount_of_credit" value="2147483647"/>
             <column name="percent" value="15"/>
             <column name="duration" value="0"/>
-            <column name="is_active" value="1"/>
+            <column name="is_active" value="true"/>
             <column name="creation_date" value="2024-05-18 00:00:00"/>
             <column name="last_update" value="2024-05-18 00:00:00"/>
         </insert>
@@ -29,7 +29,7 @@
             <column name="amount_of_credit" value="1000000"/>
             <column name="percent" value="12"/>
             <column name="duration" value="5"/>
-            <column name="is_active" value="1"/>
+            <column name="is_active" value="true"/>
             <column name="creation_date" value="2024-05-18 00:00:00"/>
             <column name="last_update" value="2024-05-18 00:00:00"/>
         </insert>

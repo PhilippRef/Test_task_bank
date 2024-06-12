@@ -7,13 +7,16 @@
 
     <changeSet id="create_rules_table" author="Filipp">
         <createTable tableName="rules">
-            <column autoIncrement="true" name="id" type="bigint">
+            <column autoIncrement="true" name="id" type="int">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="rule_name" type="varchar(64)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="borrower_salary" type="bigint">
+            <column name="borrower_salary" type="int">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="is_borrower_debtor" type="boolean">
                 <constraints nullable="false" unique="false"/>
             </column>
             <column name="creation_date" type="timestamp(6)">
@@ -22,14 +25,15 @@
             <column name="last_update" type="timestamp(6)">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="is_active" type="tinyint(1)">
+            <column name="is_active" type="boolean">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="is_borrower_debtor" type="tinyint(1)">
-                <constraints nullable="false" unique="false"/>
-            </column>
-            <column name="product_type" type="varchar(255)">
-                <constraints nullable="false" unique="false"/>
+            <column name="product_type" type="int">
+                <constraints foreignKeyName="fk_product_id"
+                             referencedTableName="products"
+                             referencedColumnNames="id"
+                             nullable="false"
+                             unique="false"/>
             </column>
         </createTable>
     </changeSet>
